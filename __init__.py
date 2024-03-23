@@ -14,35 +14,40 @@ class AddTextDropShadowOperator(bpy.types.Operator):
     bl_label = "Add Text Drop Shadow"
 
     def execute(self, context):
-        # Iterate over all selected strips
-        for strip in context.selected_sequences:
-            # Check if the strip is a text strip
-            if strip.type == 'TEXT':
-                # Set the strip as the active strip
-                context.scene.sequence_editor.active_strip = strip
-                
-                # Duplicate the selected text strip and move it down two channels
-                bpy.ops.sequencer.duplicate_move()
-                bpy.ops.transform.seq_slide(value=(0, -2))
-                
-                # Adjust the frame start and end of the duplicate text strip
-                duplicate_strip = context.scene.sequence_editor.active_strip
-                duplicate_strip.frame_final_start = strip.frame_final_start
-                duplicate_strip.frame_final_end = strip.frame_final_end
+        sequences = context.scene.sequence_editor.sequences
+        selected_text_strips = [strip for strip in context.selected_sequences if strip.type == 'TEXT']
+        
+        for strip in selected_text_strips:
+            original_channel = strip.channel
+            # Calculate the target channels for duplicate and Gaussian Blur strips
+            target_duplicate_channel = max(1, original_channel - 2)
+            target_gaussian_channel = target_duplicate_channel + 1
 
-                # Set the color of the duplicate text strip to black
-                duplicate_strip.color = (0, 0, 0, 1)
-                
-                # Mute duplicate text
-                bpy.ops.sequencer.mute(unselected=False)
+            # Duplicate the text strip
+            context.scene.sequence_editor.active_strip = strip
+            bpy.ops.sequencer.duplicate()
+            duplicate_strip = context.scene.sequence_editor.active_strip
+            duplicate_strip.channel = target_duplicate_channel
 
-                # Add a Gaussian blur effect strip and set its size
-                bpy.ops.sequencer.effect_strip_add(type='GAUSSIAN_BLUR')
-                blur_strip = context.scene.sequence_editor.active_strip
-                blur_strip.size_x = 30
-                blur_strip.size_y = 30
+            duplicate_strip.color = (0, 0, 0, 1)  # Set color to black
+            duplicate_strip.mute = True  # Mute the duplicate strip
 
-        return {'FINISHED'}
+            # Since we are applying the effect to individual pairs, we need to select them explicitly
+            # Clear any selection
+            for s in sequences:
+                s.select = False
+            # Select the original and the duplicate
+            strip.select = True
+            duplicate_strip.select = True
+            
+            # Add a Gaussian blur effect strip
+            context.scene.sequence_editor.active_strip = duplicate_strip # Set active to ensure the effect applies correctly
+            bpy.ops.sequencer.effect_strip_add(type='GAUSSIAN_BLUR', channel=target_gaussian_channel)
+            blur_strip = context.scene.sequence_editor.active_strip
+            blur_strip.size_x = 30
+            blur_strip.size_y = 30
+
+        return {'FINISHED'} 
 
 def menu_func(self, context):
     self.layout.operator("vse.add_text_drop_shadow")
