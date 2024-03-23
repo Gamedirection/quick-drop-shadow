@@ -9,7 +9,6 @@ Use: Select a text strip in the VSE and, using the f3 menu, search "add text dro
 
 Limitations:
 1. If the text strip you are adding a shadow to has anything occupying tho two channels beneath it, the script will toss the new shadow strips somewhere random in your project.
-2. Can't add shadows to multiple text strips at the same time.
 
 Installation:
 
