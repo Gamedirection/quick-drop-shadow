@@ -1,6 +1,6 @@
 bl_info = {
     "name": "Add Text Drop Shadow",
-    "version": (0, 1, 1),
+    "version": (0, 1, 2),
     "author": "Ian Letarte, GameDirection",
     "blender": (4, 0, 0),
     "description": "Add a nice drop shadow to your text strips in the VSE",
