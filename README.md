@@ -7,13 +7,12 @@ You can learn more about why i made it and how it works at: https://youtu.be/JIN
 
 Use: Select a text strip in the VSE and, using the f3 menu, search "add text drop shadow". You can add this operator to quick favorites by right clicking on it. Zoom
 
-Limitations: 
+**Limitations:** 
 1. If the text strip you are adding a shadow to has anything occupying tho two channels beneath it, the script will toss the new shadow strips somewhere random in your project.
 2. Can't add shadows to multiple text strips at the same time.
 
-Installation:
+**Installation:**
 	To load and use your script in Blender, you have several options, ranging from running the script directly in Blender's Text Editor to installing it as an add-on. Here's a step-by-step guide for both methods:
-
 	Running the Script Directly in Blender
 		1. Open Blender: Start by launching Blender.
 		2. Open the Text Editor: In Blender, switch one of the viewports to the Text Editor. You can do this by clicking on the editor type selection button (in the top-left corner of any viewport) and choosing "Text Editor".
@@ -21,7 +20,6 @@ Installation:
 		4. Run the Script: After your script is in the Text Editor, click the "Run Script" button in the Text Editor's header. This executes the script and registers your operator and panel in the UI.
 	Installing the Script as an Addon
 		To make your script easily reusable across Blender projects, you can install it as an addon. First, ensure your script has the proper bl_info block at the top (which you have), as this is required for Blender addons. Then, follow these steps:
-
 		1. Save Your Script: Save your script to a .py file on your computer if you haven't done so already.
 		2. Open Blender and Go to Preferences:
 			- Open Blender.
